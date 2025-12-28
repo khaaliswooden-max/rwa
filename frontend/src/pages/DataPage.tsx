@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import {
-  CloudArrowUpIcon,
-  ClockIcon,
-  CheckCircleIcon,
-  PlusIcon,
-} from '@heroicons/react/24/outline';
 
 // Mock data
 const mockSources = [
@@ -64,9 +58,8 @@ export default function DataPage() {
   const { register, handleSubmit, reset } = useForm<MeterReadingForm>();
 
   const onSubmit = async (data: MeterReadingForm) => {
-    // Mock submission
     console.log('Submitting:', data);
-    toast.success('Reading submitted successfully');
+    toast.success('Reading submitted');
     reset();
     setShowEntryForm(false);
   };
@@ -76,92 +69,78 @@ export default function DataPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Data Management</h1>
-          <p className="text-slate-500 mt-1">
+          <h1 className="text-xl font-semibold text-black tracking-tight">Data Management</h1>
+          <p className="text-sm text-gray-500 mt-1">
             Manage data sources and manual entry
           </p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={() => setShowEntryForm(true)}
-            className="px-4 py-2 bg-water-600 text-white rounded-lg text-sm font-medium hover:bg-water-700 transition-colors flex items-center gap-2"
+            className="btn btn-primary"
           >
-            <PlusIcon className="w-5 h-5" />
-            Manual Entry
+            + MANUAL ENTRY
           </button>
-          <button className="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors flex items-center gap-2">
-            <CloudArrowUpIcon className="w-5 h-5" />
-            Upload CSV
+          <button className="btn btn-secondary">
+            ↑ UPLOAD CSV
           </button>
         </div>
       </div>
 
       {/* Status Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-200">
         <div className="metric-card">
           <div className="flex items-center gap-2 mb-2">
             <span className="status-dot healthy" />
-            <span className="text-sm font-medium text-emerald-600">System Online</span>
+            <span className="text-xs uppercase tracking-wider text-green-600">SYSTEM ONLINE</span>
           </div>
           <div className="metric-value">2</div>
-          <div className="metric-label">Active Data Sources</div>
+          <div className="metric-label">ACTIVE SOURCES</div>
         </div>
         <div className="metric-card">
           <div className="metric-value">1,450</div>
-          <div className="metric-label">Records Today</div>
+          <div className="metric-label">RECORDS TODAY</div>
         </div>
         <div className="metric-card">
           <div className="metric-value">0</div>
-          <div className="metric-label">Errors (24h)</div>
+          <div className="metric-label">ERRORS (24H)</div>
         </div>
       </div>
 
       {/* Data Sources */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <h3 className="text-lg font-semibold text-slate-900 mb-4">Data Sources</h3>
-        <div className="space-y-4">
+      <div className="panel">
+        <div className="panel-header">
+          <h3 className="panel-title">DATA SOURCES</h3>
+        </div>
+        <div className="divide-y divide-gray-100">
           {mockSources.map((source) => (
             <div
               key={source.id}
-              className="flex items-center justify-between p-4 bg-slate-50 rounded-lg"
+              className="flex items-center justify-between px-5 py-4"
             >
               <div className="flex items-center gap-4">
-                <div
-                  className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                    source.type === 'scada'
-                      ? 'bg-water-100 text-water-600'
-                      : 'bg-amber-100 text-amber-600'
-                  }`}
-                >
+                <div className="w-10 h-10 border border-gray-200 flex items-center justify-center text-sm font-mono">
                   {source.type === 'scada' ? '📡' : '✏️'}
                 </div>
                 <div>
-                  <div className="font-medium text-slate-900">{source.name}</div>
-                  <div className="text-sm text-slate-500">
-                    Last data:{' '}
-                    {new Date(source.last_data).toLocaleString()}
+                  <div className="font-medium text-black text-sm">{source.name}</div>
+                  <div className="text-xs text-gray-500 font-mono">
+                    Last: {new Date(source.last_data).toLocaleTimeString('en-US', { hour12: false })}
                   </div>
                 </div>
               </div>
               <div className="flex items-center gap-4">
                 <span
-                  className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${
+                  className={`badge ${
                     source.status === 'connected' || source.status === 'active'
-                      ? 'bg-emerald-100 text-emerald-700'
-                      : 'bg-slate-100 text-slate-600'
+                      ? 'badge-ok'
+                      : 'badge-neutral'
                   }`}
                 >
-                  <span
-                    className={`w-2 h-2 rounded-full ${
-                      source.status === 'connected' || source.status === 'active'
-                        ? 'bg-emerald-500'
-                        : 'bg-slate-400'
-                    }`}
-                  />
-                  {source.status}
+                  {source.status.toUpperCase()}
                 </span>
-                <button className="text-sm text-water-600 hover:text-water-700 font-medium">
-                  Configure
+                <button className="text-xs text-black hover:underline font-medium">
+                  CONFIGURE
                 </button>
               </div>
             </div>
@@ -170,28 +149,33 @@ export default function DataPage() {
       </div>
 
       {/* Recent Ingestion History */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <h3 className="text-lg font-semibold text-slate-900 mb-4">
-          Recent Data Imports
-        </h3>
-        <div className="space-y-3">
+      <div className="panel">
+        <div className="panel-header">
+          <h3 className="panel-title">RECENT DATA IMPORTS</h3>
+        </div>
+        <div className="divide-y divide-gray-100">
           {mockHistory.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
+              className="flex items-center justify-between px-5 py-4"
             >
               <div className="flex items-center gap-3">
-                <CheckCircleIcon className="w-5 h-5 text-emerald-500" />
+                <span className="status-dot healthy" />
                 <div>
-                  <div className="font-medium text-slate-900">{item.source}</div>
-                  <div className="text-sm text-slate-500">
-                    {item.records} records imported
+                  <div className="font-medium text-black text-sm">{item.source}</div>
+                  <div className="text-xs text-gray-500 font-mono">
+                    {item.records} records
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-sm text-slate-500">
-                <ClockIcon className="w-4 h-4" />
-                {new Date(item.timestamp).toLocaleString()}
+              <div className="text-xs text-gray-400 font-mono">
+                {new Date(item.timestamp).toLocaleString('en-US', { 
+                  hour12: false, 
+                  month: 'short', 
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                }).toUpperCase()}
               </div>
             </div>
           ))}
@@ -199,27 +183,27 @@ export default function DataPage() {
       </div>
 
       {/* Data Freshness */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <h3 className="text-lg font-semibold text-slate-900 mb-4">Data Freshness</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-emerald-50 rounded-lg">
-            <div className="text-sm text-emerald-600 font-medium">
-              Production Meters
+      <div className="panel">
+        <div className="panel-header">
+          <h3 className="panel-title">DATA FRESHNESS</h3>
+        </div>
+        <div className="panel-body">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 border border-green-200 bg-green-50">
+              <div className="text-xs uppercase tracking-wider text-green-600">PRODUCTION METERS</div>
+              <div className="text-lg font-mono font-semibold text-green-700 mt-1">5 MIN AGO</div>
+              <div className="text-xs font-mono text-gray-500 mt-2">Real-time via SCADA</div>
             </div>
-            <div className="text-lg font-bold text-emerald-700 mt-1">
-              5 minutes ago
+            <div className="p-4 border border-amber-200 bg-amber-50">
+              <div className="text-xs uppercase tracking-wider text-amber-600">CUSTOMER METERS</div>
+              <div className="text-lg font-mono font-semibold text-amber-700 mt-1">MONTHLY</div>
+              <div className="text-xs font-mono text-gray-500 mt-2">Due in 15 days</div>
             </div>
-            <div className="text-xs text-slate-500 mt-1">Real-time via SCADA</div>
-          </div>
-          <div className="p-4 bg-amber-50 rounded-lg">
-            <div className="text-sm text-amber-600 font-medium">Customer Meters</div>
-            <div className="text-lg font-bold text-amber-700 mt-1">Monthly</div>
-            <div className="text-xs text-slate-500 mt-1">Due in 15 days</div>
-          </div>
-          <div className="p-4 bg-water-50 rounded-lg">
-            <div className="text-sm text-water-600 font-medium">Energy Data</div>
-            <div className="text-lg font-bold text-water-700 mt-1">Daily</div>
-            <div className="text-xs text-slate-500 mt-1">Updated this morning</div>
+            <div className="p-4 border border-gray-200">
+              <div className="text-xs uppercase tracking-wider text-gray-600">ENERGY DATA</div>
+              <div className="text-lg font-mono font-semibold text-black mt-1">DAILY</div>
+              <div className="text-xs font-mono text-gray-500 mt-2">Updated this morning</div>
+            </div>
           </div>
         </div>
       </div>
@@ -228,74 +212,68 @@ export default function DataPage() {
       {showEntryForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div
-            className="absolute inset-0 bg-slate-900/50"
+            className="absolute inset-0 bg-black/20"
             onClick={() => setShowEntryForm(false)}
           />
-          <div className="relative bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4">
-            <h3 className="text-lg font-semibold text-slate-900 mb-4">
-              Manual Meter Reading
+          <div className="relative bg-white border border-gray-200 p-6 max-w-md w-full mx-4">
+            <h3 className="text-sm uppercase tracking-wider text-gray-500 mb-4">
+              MANUAL METER READING
             </h3>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Meter ID
+                <label className="block text-xs uppercase tracking-wider text-gray-500 mb-2">
+                  METER ID
                 </label>
                 <input
                   {...register('meter_id', { required: true })}
                   type="text"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-water-500 focus:border-water-500"
+                  className="input"
                   placeholder="e.g., PROD-001"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Reading Value
+                <label className="block text-xs uppercase tracking-wider text-gray-500 mb-2">
+                  READING VALUE
                 </label>
                 <input
                   {...register('reading_value', { required: true })}
                   type="number"
                   step="0.01"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-water-500 focus:border-water-500"
+                  className="input"
                   placeholder="e.g., 175250.00"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Meter Type
+                <label className="block text-xs uppercase tracking-wider text-gray-500 mb-2">
+                  METER TYPE
                 </label>
-                <select
-                  {...register('reading_type')}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-water-500 focus:border-water-500"
-                >
+                <select {...register('reading_type')} className="input">
                   <option value="production">Production</option>
                   <option value="distribution">Distribution</option>
                   <option value="customer">Customer</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Notes (optional)
+                <label className="block text-xs uppercase tracking-wider text-gray-500 mb-2">
+                  NOTES (OPTIONAL)
                 </label>
                 <textarea
                   {...register('notes')}
                   rows={2}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-water-500 focus:border-water-500"
-                  placeholder="Any additional notes..."
+                  className="input"
+                  placeholder="Additional notes..."
                 />
               </div>
-              <div className="flex gap-3 pt-2">
+              <div className="flex gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowEntryForm(false)}
-                  className="flex-1 py-2 text-sm text-slate-600 hover:text-slate-900 border border-slate-300 rounded-lg"
+                  className="btn btn-secondary flex-1"
                 >
-                  Cancel
+                  CANCEL
                 </button>
-                <button
-                  type="submit"
-                  className="flex-1 py-2 text-sm text-white bg-water-600 hover:bg-water-700 rounded-lg font-medium"
-                >
-                  Submit Reading
+                <button type="submit" className="btn btn-primary flex-1">
+                  SUBMIT
                 </button>
               </div>
             </form>
@@ -305,4 +283,3 @@ export default function DataPage() {
     </div>
   );
 }
-

@@ -7,41 +7,37 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Water-inspired palette
-        water: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-          950: '#082f49',
+        // Minimalist monochrome palette
+        panel: {
+          bg: '#ffffff',
+          border: '#e0e0e0',
+          hover: '#f5f5f5',
         },
-        // Earth tones for infrastructure
-        earth: {
-          50: '#faf8f5',
-          100: '#f3efe8',
-          200: '#e6ddd0',
-          300: '#d4c5af',
-          400: '#bfa88a',
-          500: '#a88e6c',
-          600: '#977a5e',
-          700: '#7d634f',
-          800: '#675344',
-          900: '#55453a',
-          950: '#2d241e',
+        // Functional colors only - minimal
+        status: {
+          ok: '#22c55e',
+          warn: '#f59e0b',
+          error: '#ef4444',
         },
       },
       fontFamily: {
-        sans: ['DM Sans', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        mono: ['"IBM Plex Mono"', '"SF Mono"', 'Consolas', 'monospace'],
+        sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+      },
+      fontSize: {
+        'display': ['3.5rem', { lineHeight: '1', letterSpacing: '-0.02em' }],
+        'data': ['1.75rem', { lineHeight: '1.2', letterSpacing: '-0.01em' }],
+        'label': ['0.6875rem', { lineHeight: '1.4', letterSpacing: '0.05em' }],
+      },
+      borderRadius: {
+        'none': '0',
+        'sm': '2px',
+        DEFAULT: '2px',
+      },
+      boxShadow: {
+        'none': 'none',
       },
     },
   },
   plugins: [],
 };
-

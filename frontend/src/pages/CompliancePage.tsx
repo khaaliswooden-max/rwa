@@ -1,11 +1,4 @@
 import { useState } from 'react';
-import {
-  CheckCircleIcon,
-  ClockIcon,
-  ExclamationTriangleIcon,
-  DocumentTextIcon,
-  CalendarIcon,
-} from '@heroicons/react/24/outline';
 
 // Mock data
 const mockSummary = {
@@ -82,26 +75,11 @@ export default function CompliancePage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'completed':
-        return (
-          <span className="flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-700">
-            <CheckCircleIcon className="w-3 h-3" />
-            Completed
-          </span>
-        );
+        return <span className="badge badge-ok">COMPLETED</span>;
       case 'pending':
-        return (
-          <span className="flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-700">
-            <ClockIcon className="w-3 h-3" />
-            Pending
-          </span>
-        );
+        return <span className="badge badge-warn">PENDING</span>;
       case 'overdue':
-        return (
-          <span className="flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-700">
-            <ExclamationTriangleIcon className="w-3 h-3" />
-            Overdue
-          </span>
-        );
+        return <span className="badge badge-error">OVERDUE</span>;
       default:
         return null;
     }
@@ -112,62 +90,61 @@ export default function CompliancePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Compliance</h1>
-          <p className="text-slate-500 mt-1">
+          <h1 className="text-xl font-semibold text-black tracking-tight">Compliance</h1>
+          <p className="text-sm text-gray-500 mt-1">
             Track regulatory obligations and manage reporting
           </p>
         </div>
         <button
           onClick={() => setShowReportModal(true)}
-          className="px-4 py-2 bg-water-600 text-white rounded-lg text-sm font-medium hover:bg-water-700 transition-colors flex items-center gap-2"
+          className="btn btn-primary"
         >
-          <DocumentTextIcon className="w-5 h-5" />
-          Generate Report
+          GENERATE REPORT
         </button>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-200">
         <div className="metric-card">
           <div className="metric-value">{mockSummary.compliance_score}</div>
-          <div className="metric-label">Compliance Score</div>
-          <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
+          <div className="metric-label">COMPLIANCE SCORE</div>
+          <div className="w-full bg-gray-200 h-1 mt-3">
             <div
-              className="bg-emerald-500 h-2 rounded-full"
+              className="bg-black h-1"
               style={{ width: `${mockSummary.compliance_score}%` }}
             />
           </div>
         </div>
         <div className="metric-card">
-          <div className="metric-value text-emerald-600">{mockSummary.completed}</div>
-          <div className="metric-label">Completed</div>
+          <div className="metric-value text-green-600">{mockSummary.completed}</div>
+          <div className="metric-label">COMPLETED</div>
         </div>
         <div className="metric-card">
           <div className="metric-value text-amber-600">{mockSummary.pending}</div>
-          <div className="metric-label">Pending</div>
+          <div className="metric-label">PENDING</div>
         </div>
         <div className="metric-card">
           <div className="metric-value text-red-600">{mockSummary.overdue}</div>
-          <div className="metric-label">Overdue</div>
+          <div className="metric-label">OVERDUE</div>
         </div>
       </div>
 
       {/* Obligations Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200">
-        <div className="p-4 border-b border-slate-200 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-slate-900">Obligations</h3>
-          <div className="flex gap-2">
+      <div className="panel">
+        <div className="panel-header flex items-center justify-between">
+          <h3 className="panel-title">OBLIGATIONS</h3>
+          <div className="flex gap-1">
             {['all', 'pending', 'overdue', 'completed'].map((status) => (
               <button
                 key={status}
                 onClick={() => setStatusFilter(status)}
-                className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                className={`px-3 py-1.5 text-xs font-medium transition-colors ${
                   statusFilter === status
-                    ? 'bg-water-600 text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-black text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                {status.charAt(0).toUpperCase() + status.slice(1)}
+                {status.toUpperCase()}
               </button>
             ))}
           </div>
@@ -176,31 +153,35 @@ export default function CompliancePage() {
           <table className="data-table">
             <thead>
               <tr>
-                <th>Obligation</th>
-                <th>Category</th>
-                <th>Regulation</th>
-                <th>Due Date</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>OBLIGATION</th>
+                <th>CATEGORY</th>
+                <th>REGULATION</th>
+                <th>DUE DATE</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
               </tr>
             </thead>
             <tbody>
               {filteredObligations.map((obligation) => (
                 <tr key={obligation.id}>
                   <td>
-                    <div className="font-medium">{obligation.title}</div>
-                    <div className="text-xs text-slate-500">
+                    <div className="font-medium text-black">{obligation.title}</div>
+                    <div className="text-xs text-gray-500 font-mono mt-0.5">
                       {obligation.responsible}
                     </div>
                   </td>
-                  <td>{obligation.category}</td>
-                  <td className="text-xs text-slate-500">{obligation.regulation}</td>
-                  <td>{new Date(obligation.due_date).toLocaleDateString()}</td>
+                  <td>
+                    <span className="text-xs font-mono text-gray-500 uppercase">
+                      {obligation.category}
+                    </span>
+                  </td>
+                  <td className="text-xs text-gray-500 font-mono">{obligation.regulation}</td>
+                  <td className="font-mono">{new Date(obligation.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase()}</td>
                   <td>{getStatusBadge(obligation.status)}</td>
                   <td>
                     {obligation.status !== 'completed' && (
-                      <button className="text-sm text-water-600 hover:text-water-700 font-medium">
-                        Mark Complete
+                      <button className="text-xs text-black hover:underline font-medium">
+                        MARK COMPLETE
                       </button>
                     )}
                   </td>
@@ -212,12 +193,11 @@ export default function CompliancePage() {
       </div>
 
       {/* Calendar View */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <CalendarIcon className="w-5 h-5 text-slate-400" />
-          <h3 className="text-lg font-semibold text-slate-900">Upcoming Deadlines</h3>
+      <div className="panel">
+        <div className="panel-header">
+          <h3 className="panel-title">UPCOMING DEADLINES</h3>
         </div>
-        <div className="space-y-3">
+        <div className="divide-y divide-gray-100">
           {mockObligations
             .filter((o) => o.status !== 'completed')
             .sort((a, b) => new Date(a.due_date).getTime() - new Date(b.due_date).getTime())
@@ -233,26 +213,28 @@ export default function CompliancePage() {
               return (
                 <div
                   key={obligation.id}
-                  className={`flex items-center justify-between p-3 rounded-lg ${
-                    isOverdue ? 'bg-red-50' : 'bg-slate-50'
+                  className={`flex items-center justify-between px-5 py-4 ${
+                    isOverdue ? 'bg-red-50' : ''
                   }`}
                 >
                   <div>
-                    <div className="font-medium text-slate-900">{obligation.title}</div>
-                    <div className="text-sm text-slate-500">{obligation.category}</div>
+                    <div className="font-medium text-black text-sm">{obligation.title}</div>
+                    <div className="text-xs text-gray-500 uppercase tracking-wider mt-0.5">
+                      {obligation.category}
+                    </div>
                   </div>
                   <div className="text-right">
                     <div
-                      className={`text-sm font-medium ${
-                        isOverdue ? 'text-red-600' : 'text-slate-600'
+                      className={`text-sm font-mono font-medium ${
+                        isOverdue ? 'text-red-600' : 'text-gray-600'
                       }`}
                     >
                       {isOverdue
-                        ? `${Math.abs(daysUntil)} days overdue`
-                        : `${daysUntil} days left`}
+                        ? `${Math.abs(daysUntil)}D OVERDUE`
+                        : `${daysUntil}D LEFT`}
                     </div>
-                    <div className="text-xs text-slate-400">
-                      {dueDate.toLocaleDateString()}
+                    <div className="text-xs text-gray-400 font-mono">
+                      {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase()}
                     </div>
                   </div>
                 </div>
@@ -265,29 +247,29 @@ export default function CompliancePage() {
       {showReportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div
-            className="absolute inset-0 bg-slate-900/50"
+            className="absolute inset-0 bg-black/20"
             onClick={() => setShowReportModal(false)}
           />
-          <div className="relative bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4">
-            <h3 className="text-lg font-semibold text-slate-900 mb-4">
-              Generate Report
+          <div className="relative bg-white border border-gray-200 p-6 max-w-md w-full mx-4">
+            <h3 className="text-sm uppercase tracking-wider text-gray-500 mb-4">
+              GENERATE REPORT
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {reportTypes.map((report) => (
                 <button
                   key={report.type}
-                  className="w-full p-4 text-left rounded-lg border border-slate-200 hover:border-water-500 hover:bg-water-50 transition-colors"
+                  className="w-full p-4 text-left border border-gray-200 hover:border-black hover:bg-gray-50 transition-colors"
                 >
-                  <div className="font-medium text-slate-900">{report.name}</div>
-                  <div className="text-sm text-slate-500">{report.frequency}</div>
+                  <div className="font-medium text-black text-sm">{report.name}</div>
+                  <div className="text-xs text-gray-500 font-mono mt-0.5">{report.frequency}</div>
                 </button>
               ))}
             </div>
             <button
               onClick={() => setShowReportModal(false)}
-              className="mt-4 w-full py-2 text-sm text-slate-600 hover:text-slate-900"
+              className="mt-4 w-full py-2 text-xs text-gray-500 hover:text-black transition-colors"
             >
-              Cancel
+              CANCEL
             </button>
           </div>
         </div>
@@ -295,4 +277,3 @@ export default function CompliancePage() {
     </div>
   );
 }
-

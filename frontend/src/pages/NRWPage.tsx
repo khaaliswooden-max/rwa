@@ -1,9 +1,4 @@
 import { useState } from 'react';
-import {
-  ArrowTrendingDownIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon,
-} from '@heroicons/react/24/outline';
 
 // Mock data
 const mockSummary = {
@@ -30,15 +25,15 @@ export default function NRWPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Non-Revenue Water</h1>
-          <p className="text-slate-500 mt-1">
+          <h1 className="text-xl font-semibold text-black tracking-tight">Non-Revenue Water</h1>
+          <p className="text-sm text-gray-500 mt-1">
             Monitor water losses and optimize distribution efficiency
           </p>
         </div>
         <select
           value={selectedPeriod}
           onChange={(e) => setSelectedPeriod(e.target.value)}
-          className="px-4 py-2 border border-slate-300 rounded-lg bg-white text-sm"
+          className="input w-auto"
         >
           <option value="7">Last 7 days</option>
           <option value="30">Last 30 days</option>
@@ -48,139 +43,137 @@ export default function NRWPage() {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-gray-200">
         <div className="metric-card">
-          <div className="metric-value text-water-600">
-            {mockSummary.nrw_percentage}%
-          </div>
-          <div className="metric-label">NRW Percentage</div>
-          <div className="metric-trend text-emerald-600">
-            <ArrowTrendingDownIcon className="w-4 h-4" />
+          <div className="metric-value">{mockSummary.nrw_percentage}</div>
+          <div className="text-xs font-mono text-gray-400 -mt-1">%</div>
+          <div className="metric-label">NRW PERCENTAGE</div>
+          <div className="metric-trend text-green-600 font-mono">
+            <span>↓</span>
             <span>{Math.abs(mockSummary.trend_percentage)}% vs last period</span>
           </div>
         </div>
         <div className="metric-card">
           <div className="metric-value">{mockSummary.nrw_volume_m3.toLocaleString()}</div>
-          <div className="metric-label">NRW Volume (m³)</div>
+          <div className="text-xs font-mono text-gray-400 -mt-1">m³</div>
+          <div className="metric-label">NRW VOLUME</div>
         </div>
         <div className="metric-card">
-          <div className="metric-value text-red-600">
-            {mockSummary.real_losses_m3.toLocaleString()}
-          </div>
-          <div className="metric-label">Real Losses (m³)</div>
+          <div className="metric-value text-red-600">{mockSummary.real_losses_m3.toLocaleString()}</div>
+          <div className="text-xs font-mono text-gray-400 -mt-1">m³</div>
+          <div className="metric-label">REAL LOSSES</div>
         </div>
         <div className="metric-card">
           <div className="metric-value">{mockSummary.infrastructure_leakage_index}</div>
-          <div className="metric-label">Infrastructure Leakage Index</div>
-          <div className="text-xs text-slate-500 mt-1">Target: &lt; 2.0</div>
+          <div className="metric-label">ILI</div>
+          <div className="text-xs font-mono text-gray-400 mt-1">Target: &lt; 2.0</div>
         </div>
       </div>
 
       {/* IWA Water Balance */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <h3 className="text-lg font-semibold text-slate-900 mb-4">
-          IWA Water Balance
-        </h3>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Sankey-style breakdown */}
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="w-32 text-sm text-slate-600">System Input</div>
-              <div className="flex-1 h-8 bg-water-500 rounded text-white text-sm flex items-center px-3 font-medium">
-                20,000 m³ (100%)
+      <div className="panel">
+        <div className="panel-header">
+          <h3 className="panel-title">IWA WATER BALANCE</h3>
+        </div>
+        <div className="panel-body">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Sankey-style breakdown */}
+            <div className="space-y-3 font-mono text-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-28 text-gray-500 text-xs">SYSTEM INPUT</div>
+                <div className="flex-1 h-8 bg-black text-white flex items-center px-3 text-xs">
+                  20,000 m³ (100%)
+                </div>
+              </div>
+              <div className="flex items-center gap-3 pl-6">
+                <div className="w-22 text-gray-500 text-xs">REVENUE</div>
+                <div className="flex-1 h-8 bg-green-600 text-white flex items-center px-3 text-xs">
+                  15,500 m³ (77.5%)
+                </div>
+              </div>
+              <div className="flex items-center gap-3 pl-6">
+                <div className="w-22 text-gray-500 text-xs">NON-REV</div>
+                <div className="flex-1 h-8 bg-amber-500 text-white flex items-center px-3 text-xs">
+                  4,500 m³ (22.5%)
+                </div>
+              </div>
+              <div className="flex items-center gap-3 pl-12">
+                <div className="w-16 text-gray-400 text-xs">REAL</div>
+                <div className="flex-1 h-6 bg-red-500 text-white flex items-center px-2 text-xs">
+                  3,200 m³ (16%)
+                </div>
+              </div>
+              <div className="flex items-center gap-3 pl-12">
+                <div className="w-16 text-gray-400 text-xs">APPARENT</div>
+                <div className="flex-1 h-6 bg-orange-400 text-white flex items-center px-2 text-xs">
+                  1,300 m³ (6.5%)
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-3 pl-8">
-              <div className="w-24 text-sm text-slate-600">Revenue Water</div>
-              <div className="flex-1 h-8 bg-emerald-500 rounded text-white text-sm flex items-center px-3 font-medium">
-                15,500 m³ (77.5%)
-              </div>
-            </div>
-            <div className="flex items-center gap-3 pl-8">
-              <div className="w-24 text-sm text-slate-600">Non-Revenue</div>
-              <div className="flex-1 h-8 bg-amber-500 rounded text-white text-sm flex items-center px-3 font-medium">
-                4,500 m³ (22.5%)
-              </div>
-            </div>
-            <div className="flex items-center gap-3 pl-16">
-              <div className="w-20 text-sm text-slate-500">Real Losses</div>
-              <div className="flex-1 h-6 bg-red-400 rounded text-white text-xs flex items-center px-2">
-                3,200 m³ (16%)
-              </div>
-            </div>
-            <div className="flex items-center gap-3 pl-16">
-              <div className="w-20 text-sm text-slate-500">Apparent</div>
-              <div className="flex-1 h-6 bg-orange-400 rounded text-white text-xs flex items-center px-2">
-                1,300 m³ (6.5%)
-              </div>
-            </div>
-          </div>
 
-          {/* Performance indicators */}
-          <div className="space-y-4">
-            <div className="p-4 bg-slate-50 rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-medium text-slate-700">ILI Rating</span>
-                <span className="px-2 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-700">
-                  Good
-                </span>
+            {/* Performance indicators */}
+            <div className="space-y-4">
+              <div className="p-4 border border-gray-200">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs uppercase tracking-wider text-gray-500">ILI RATING</span>
+                  <span className="badge badge-warn">GOOD</span>
+                </div>
+                <p className="text-sm text-gray-600">
+                  ILI of 2.8 is within acceptable range but above world-class target of 2.0
+                </p>
               </div>
-              <p className="text-sm text-slate-500">
-                ILI of 2.8 is within acceptable range but above world-class target of
-                2.0
-              </p>
-            </div>
-            <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-200">
-              <div className="flex items-center gap-2 mb-2">
-                <CheckCircleIcon className="w-5 h-5 text-emerald-600" />
-                <span className="font-medium text-emerald-700">Improving Trend</span>
+              <div className="p-4 border border-green-200 bg-green-50">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="status-dot healthy" />
+                  <span className="text-xs uppercase tracking-wider text-green-700">IMPROVING TREND</span>
+                </div>
+                <p className="text-sm text-green-700">
+                  NRW has decreased 3.2% compared to previous period
+                </p>
               </div>
-              <p className="text-sm text-emerald-600">
-                NRW has decreased 3.2% compared to previous period
-              </p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Zone Analysis */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <h3 className="text-lg font-semibold text-slate-900 mb-4">
-          Distribution Zone Analysis
-        </h3>
+      <div className="panel">
+        <div className="panel-header">
+          <h3 className="panel-title">DISTRIBUTION ZONE ANALYSIS</h3>
+        </div>
         <div className="overflow-x-auto">
           <table className="data-table">
             <thead>
               <tr>
-                <th>Zone</th>
+                <th>ZONE</th>
                 <th>ILI</th>
                 <th>MNF (m³/h)</th>
-                <th>Risk Level</th>
-                <th>Action</th>
+                <th>RISK</th>
+                <th>ACTION</th>
               </tr>
             </thead>
             <tbody>
               {mockZones.map((zone) => (
                 <tr key={zone.id}>
-                  <td className="font-medium">{zone.name}</td>
-                  <td>{zone.ili}</td>
-                  <td>{zone.mnf}</td>
+                  <td className="font-medium text-black">{zone.name}</td>
+                  <td className="font-mono">{zone.ili}</td>
+                  <td className="font-mono">{zone.mnf}</td>
                   <td>
                     <span
-                      className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      className={`badge ${
                         zone.risk === 'high'
-                          ? 'bg-red-100 text-red-700'
+                          ? 'badge-error'
                           : zone.risk === 'medium'
-                            ? 'bg-amber-100 text-amber-700'
-                            : 'bg-emerald-100 text-emerald-700'
+                            ? 'badge-warn'
+                            : 'badge-ok'
                       }`}
                     >
-                      {zone.risk}
+                      {zone.risk.toUpperCase()}
                     </span>
                   </td>
                   <td>
-                    <button className="text-sm text-water-600 hover:text-water-700 font-medium">
-                      Analyze
+                    <button className="text-xs text-black hover:underline font-medium">
+                      ANALYZE
                     </button>
                   </td>
                 </tr>
@@ -191,30 +184,28 @@ export default function NRWPage() {
       </div>
 
       {/* Recommendations */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <h3 className="text-lg font-semibold text-slate-900 mb-4">
-          Recommendations
-        </h3>
-        <div className="space-y-4">
-          <div className="flex items-start gap-4 p-4 bg-amber-50 rounded-lg border border-amber-200">
-            <ExclamationTriangleIcon className="w-6 h-6 text-amber-500 flex-shrink-0" />
+      <div className="panel">
+        <div className="panel-header">
+          <h3 className="panel-title">RECOMMENDATIONS</h3>
+        </div>
+        <div className="divide-y divide-gray-100">
+          <div className="p-5 flex items-start gap-4">
+            <span className="status-dot warning mt-1.5" />
             <div>
-              <h4 className="font-medium text-slate-900">
+              <h4 className="text-sm font-medium text-black">
                 Zone C requires attention
               </h4>
-              <p className="text-sm text-slate-600 mt-1">
-                ILI of 4.8 is above target. Consider scheduling acoustic leak
-                detection survey within the next 30 days.
+              <p className="text-sm text-gray-600 mt-1">
+                ILI of 4.8 is above target. Consider scheduling acoustic leak detection survey within the next 30 days.
               </p>
             </div>
           </div>
-          <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-lg">
-            <CheckCircleIcon className="w-6 h-6 text-slate-400 flex-shrink-0" />
+          <div className="p-5 flex items-start gap-4">
+            <span className="status-dot healthy mt-1.5" />
             <div>
-              <h4 className="font-medium text-slate-900">Continue monitoring Zone B</h4>
-              <p className="text-sm text-slate-600 mt-1">
-                Performance is excellent with ILI of 2.1. Maintain current
-                monitoring schedule.
+              <h4 className="text-sm font-medium text-black">Continue monitoring Zone B</h4>
+              <p className="text-sm text-gray-600 mt-1">
+                Performance is excellent with ILI of 2.1. Maintain current monitoring schedule.
               </p>
             </div>
           </div>
@@ -223,4 +214,3 @@ export default function NRWPage() {
     </div>
   );
 }
-

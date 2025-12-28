@@ -2,147 +2,188 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base */
 :root {
-  --color-water-primary: #0369a1;
-  --color-water-secondary: #0ea5e9;
-  --color-water-accent: #38bdf8;
+  --panel-bg: #ffffff;
+  --panel-border: #e0e0e0;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --status-ok: #22c55e;
+  --status-warn: #f59e0b;
+  --status-error: #ef4444;
+}
+
+html {
+  font-feature-settings: "tnum" 1, "ss01" 1;
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  @apply bg-white text-black antialiased;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - minimal */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-100;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded-full;
+  background: #ccc;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400;
+  background: #999;
 }
 
-/* Animated gradient background for hero sections */
-.gradient-bg {
-  background: linear-gradient(
-    135deg,
-    #0369a1 0%,
-    #0ea5e9 50%,
-    #06b6d4 100%
-  );
-  background-size: 200% 200%;
-  animation: gradient-shift 15s ease infinite;
+/* Data display */
+.font-data {
+  font-family: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+  font-feature-settings: "tnum" 1;
 }
 
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* Metric card - stark */
+.metric-card {
+  @apply bg-white border border-gray-200 p-5;
 }
 
-/* Card hover effect */
-.card-hover {
-  @apply transition-all duration-300;
+.metric-value {
+  @apply text-4xl font-semibold tracking-tight font-mono text-black;
 }
 
-.card-hover:hover {
-  @apply shadow-lg -translate-y-1;
+.metric-label {
+  @apply text-xs uppercase tracking-widest text-gray-500 mt-2;
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 
-/* Status indicators */
+.metric-trend {
+  @apply flex items-center gap-1.5 text-xs mt-3 font-mono;
+}
+
+.metric-trend.up {
+  color: var(--status-ok);
+}
+
+.metric-trend.down {
+  color: var(--status-error);
+}
+
+/* Status indicators - simple dots */
 .status-dot {
   @apply w-2 h-2 rounded-full;
 }
 
 .status-dot.healthy {
-  @apply bg-emerald-500;
-  animation: pulse-green 2s infinite;
+  background: var(--status-ok);
 }
 
 .status-dot.warning {
-  @apply bg-amber-500;
-  animation: pulse-amber 2s infinite;
+  background: var(--status-warn);
 }
 
 .status-dot.critical {
-  @apply bg-red-500;
-  animation: pulse-red 1s infinite;
+  background: var(--status-error);
+  animation: blink 1s infinite;
 }
 
-@keyframes pulse-green {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-  50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 
-@keyframes pulse-amber {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
-  50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
-}
-
-@keyframes pulse-red {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-  50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
-}
-
-/* Data table styling */
+/* Data table - terminal style */
 .data-table {
-  @apply w-full text-sm;
+  @apply w-full text-sm font-mono;
 }
 
 .data-table th {
-  @apply px-4 py-3 text-left font-semibold text-slate-600 bg-slate-50 border-b border-slate-200;
+  @apply px-4 py-3 text-left text-xs uppercase tracking-wider text-gray-500 bg-gray-50 border-b border-gray-200 font-medium;
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 
 .data-table td {
-  @apply px-4 py-3 border-b border-slate-100;
+  @apply px-4 py-3 border-b border-gray-100 text-black;
 }
 
 .data-table tr:hover td {
-  @apply bg-slate-50;
+  @apply bg-gray-50;
 }
 
-/* Metric card */
-.metric-card {
-  @apply bg-white rounded-xl p-6 shadow-sm border border-slate-200;
+/* Panel component */
+.panel {
+  @apply bg-white border border-gray-200;
 }
 
-.metric-value {
-  @apply text-3xl font-bold text-slate-900;
+.panel-header {
+  @apply px-5 py-4 border-b border-gray-200;
 }
 
-.metric-label {
-  @apply text-sm text-slate-500 mt-1;
+.panel-title {
+  @apply text-xs uppercase tracking-widest text-gray-500 font-medium;
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 
-.metric-trend {
-  @apply flex items-center gap-1 text-sm mt-2;
+.panel-body {
+  @apply p-5;
 }
 
-.metric-trend.up {
-  @apply text-emerald-600;
+/* Button - minimal */
+.btn {
+  @apply px-4 py-2 text-sm font-medium transition-colors border;
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 
-.metric-trend.down {
-  @apply text-red-600;
+.btn-primary {
+  @apply bg-black text-white border-black hover:bg-gray-800;
 }
 
-/* Water drop animation */
-@keyframes drop {
-  0% { transform: translateY(-100%) scale(0.8); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateY(100vh) scale(1); opacity: 0; }
+.btn-secondary {
+  @apply bg-white text-black border-gray-300 hover:bg-gray-50;
 }
 
-.water-drop {
-  animation: drop 4s ease-in infinite;
+/* Input - stark */
+.input {
+  @apply w-full px-3 py-2 border border-gray-300 text-black bg-white font-mono text-sm;
 }
 
+.input:focus {
+  @apply outline-none border-black;
+}
+
+/* Badge - minimal */
+.badge {
+  @apply inline-flex items-center px-2 py-0.5 text-xs font-medium border;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.badge-ok {
+  @apply text-green-700 bg-green-50 border-green-200;
+}
+
+.badge-warn {
+  @apply text-amber-700 bg-amber-50 border-amber-200;
+}
+
+.badge-error {
+  @apply text-red-700 bg-red-50 border-red-200;
+}
+
+.badge-neutral {
+  @apply text-gray-700 bg-gray-50 border-gray-200;
+}
+
+/* Section divider */
+.divider {
+  @apply border-t border-gray-200;
+}
+
+/* Digital readout effect */
+.readout {
+  font-family: 'IBM Plex Mono', monospace;
+  @apply tabular-nums;
+}
