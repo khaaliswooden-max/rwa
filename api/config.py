@@ -28,8 +28,9 @@ class Settings(BaseSettings):
     api_port: int = 8000
     api_prefix: str = "/api/v1"
 
-    # CORS
+    # CORS - comma-separated list of allowed origins
     frontend_url: str = "http://localhost:3000"
+    cors_origins: str = ""  # Additional origins, comma-separated (e.g., "https://app.vercel.app,https://custom.domain.com")
 
     # Database
     database_url: PostgresDsn = Field(

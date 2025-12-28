@@ -38,10 +38,17 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS middleware
+# CORS middleware - build list of allowed origins
+cors_origins = [settings.frontend_url]
+if settings.cors_origins:
+    # Add additional origins from comma-separated config
+    cors_origins.extend(
+        origin.strip() for origin in settings.cors_origins.split(",") if origin.strip()
+    )
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_url],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

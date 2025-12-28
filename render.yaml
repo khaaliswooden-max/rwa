@@ -1,0 +1,33 @@
+# Render Blueprint - https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: rwa-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: FRONTEND_URL
+        sync: false  # Set manually in dashboard
+      - key: CORS_ORIGINS
+        sync: false  # Set manually in dashboard
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: rwa-db
+          property: connectionString
+
+databases:
+  - name: rwa-db
+    plan: free
+    databaseName: rwa_prod
+    user: rwa_user
+
