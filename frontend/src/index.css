@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-water-primary: #0369a1;
+  --color-water-secondary: #0ea5e9;
+  --color-water-accent: #38bdf8;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}
+
+/* Animated gradient background for hero sections */
+.gradient-bg {
+  background: linear-gradient(
+    135deg,
+    #0369a1 0%,
+    #0ea5e9 50%,
+    #06b6d4 100%
+  );
+  background-size: 200% 200%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Card hover effect */
+.card-hover {
+  @apply transition-all duration-300;
+}
+
+.card-hover:hover {
+  @apply shadow-lg -translate-y-1;
+}
+
+/* Status indicators */
+.status-dot {
+  @apply w-2 h-2 rounded-full;
+}
+
+.status-dot.healthy {
+  @apply bg-emerald-500;
+  animation: pulse-green 2s infinite;
+}
+
+.status-dot.warning {
+  @apply bg-amber-500;
+  animation: pulse-amber 2s infinite;
+}
+
+.status-dot.critical {
+  @apply bg-red-500;
+  animation: pulse-red 1s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+}
+
+@keyframes pulse-amber {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+  50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+}
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+/* Data table styling */
+.data-table {
+  @apply w-full text-sm;
+}
+
+.data-table th {
+  @apply px-4 py-3 text-left font-semibold text-slate-600 bg-slate-50 border-b border-slate-200;
+}
+
+.data-table td {
+  @apply px-4 py-3 border-b border-slate-100;
+}
+
+.data-table tr:hover td {
+  @apply bg-slate-50;
+}
+
+/* Metric card */
+.metric-card {
+  @apply bg-white rounded-xl p-6 shadow-sm border border-slate-200;
+}
+
+.metric-value {
+  @apply text-3xl font-bold text-slate-900;
+}
+
+.metric-label {
+  @apply text-sm text-slate-500 mt-1;
+}
+
+.metric-trend {
+  @apply flex items-center gap-1 text-sm mt-2;
+}
+
+.metric-trend.up {
+  @apply text-emerald-600;
+}
+
+.metric-trend.down {
+  @apply text-red-600;
+}
+
+/* Water drop animation */
+@keyframes drop {
+  0% { transform: translateY(-100%) scale(0.8); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(100vh) scale(1); opacity: 0; }
+}
+
+.water-drop {
+  animation: drop 4s ease-in infinite;
+}
+
