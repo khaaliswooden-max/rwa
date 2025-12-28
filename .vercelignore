@@ -1,0 +1,30 @@
+# Ignore Python backend - deployed separately
+api/
+src/
+tests/
+scripts/
+*.py
+requirements*.txt
+pyproject.toml
+Dockerfile
+Procfile
+railway.json
+render.yaml
+fly.toml
+
+# Ignore docs
+docs/
+*.md
+
+# Ignore development files
+.env*
+*.log
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+venv/
+.venv/
+
+# Keep frontend
+!frontend/
+
