@@ -104,4 +104,3 @@ def create_hypertables(connection) -> None:
         except Exception as e:
             # Hypertable might already exist or TimescaleDB not installed
             print(f"Note: Could not create hypertable for {table_name}: {e}")
-

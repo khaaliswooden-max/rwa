@@ -11,7 +11,11 @@ Key components:
 
 from src.nrw.leak_detection import LeakAnalysis, analyze_leak_indicators
 from src.nrw.mnf_analysis import MNFResult, analyze_minimum_night_flow
-from src.nrw.water_balance import WaterBalance, WaterBalanceInput, calculate_water_balance
+from src.nrw.water_balance import (
+    WaterBalance,
+    WaterBalanceInput,
+    calculate_water_balance,
+)
 
 __all__ = [
     "WaterBalance",
@@ -22,4 +26,3 @@ __all__ = [
     "MNFResult",
     "analyze_minimum_night_flow",
 ]
-

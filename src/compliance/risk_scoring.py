@@ -43,9 +43,7 @@ class RiskAssessment(BaseModel):
     )
 
     # Category breakdown
-    category_risks: list[CategoryRisk] = Field(
-        ..., description="Risk by category"
-    )
+    category_risks: list[CategoryRisk] = Field(..., description="Risk by category")
 
     # Summary statistics
     total_obligations: int = Field(..., description="Total obligations")
@@ -96,9 +94,7 @@ def calculate_compliance_risk(
 
     # Filter by category if specified
     if include_categories:
-        obligations = [
-            o for o in obligations if o["category"] in include_categories
-        ]
+        obligations = [o for o in obligations if o["category"] in include_categories]
 
     # Calculate by category
     categories = set(o["category"] for o in obligations)
@@ -135,7 +131,9 @@ def calculate_compliance_risk(
 
     # Calculate overall risk score (weighted average of category scores)
     if category_risks:
-        overall_score = sum(cr.risk_score for cr in category_risks) / len(category_risks)
+        overall_score = sum(cr.risk_score for cr in category_risks) / len(
+            category_risks
+        )
         # Boost score if any critical categories
         critical_count = sum(1 for cr in category_risks if cr.risk_level == "critical")
         overall_score = min(100, overall_score + (critical_count * 10))
@@ -303,4 +301,3 @@ def _get_sample_obligation_data() -> list[dict]:
             "due_date": today - timedelta(days=15),
         },
     ]
-

@@ -73,12 +73,8 @@ class WaterBalance(BaseModel):
         return self.billed_authorized_consumption + self.unbilled_authorized_consumption
 
     # Water Losses
-    apparent_losses: float = Field(
-        ..., description="Total apparent losses (m³)"
-    )
-    real_losses: float = Field(
-        ..., description="Total real losses (m³)"
-    )
+    apparent_losses: float = Field(..., description="Total apparent losses (m³)")
+    real_losses: float = Field(..., description="Total real losses (m³)")
 
     @computed_field
     @property
@@ -136,7 +132,7 @@ def calculate_water_balance(input_data: WaterBalanceInput) -> WaterBalance:
     Calculate IWA-standard water balance.
 
     The water balance follows this hierarchy:
-    
+
     System Input Volume
     ├── Authorized Consumption
     │   ├── Billed Authorized Consumption (Revenue Water)
@@ -159,8 +155,7 @@ def calculate_water_balance(input_data: WaterBalanceInput) -> WaterBalance:
     """
     # Calculate authorized consumption components
     billed_authorized = (
-        input_data.billed_metered_consumption
-        + input_data.billed_unmetered_consumption
+        input_data.billed_metered_consumption + input_data.billed_unmetered_consumption
     )
     unbilled_authorized = (
         input_data.unbilled_metered_consumption
@@ -259,9 +254,7 @@ def calculate_uarl(
         UARL in liters per day
     """
     # Convert service connection length to km
-    total_service_length_km = (
-        service_connections * service_connection_length_m / 1000
-    )
+    total_service_length_km = service_connections * service_connection_length_m / 1000
 
     # UARL formula (liters/day)
     uarl = (
@@ -271,4 +264,3 @@ def calculate_uarl(
     ) * average_pressure_m
 
     return uarl
-

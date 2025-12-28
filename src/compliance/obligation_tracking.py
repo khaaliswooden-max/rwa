@@ -57,9 +57,7 @@ class Obligation(BaseModel):
     status: ObligationStatus = Field(
         default=ObligationStatus.PENDING, description="Current status"
     )
-    completion_date: date | None = Field(
-        default=None, description="Date completed"
-    )
+    completion_date: date | None = Field(default=None, description="Date completed")
     notes: str = Field(default="", description="Status notes")
 
     # Assignment
@@ -263,4 +261,3 @@ EPA_SDWA_OBLIGATIONS = [
         "description": "Comprehensive system evaluation by primacy agency",
     },
 ]
-

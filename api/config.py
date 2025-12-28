@@ -24,13 +24,16 @@ class Settings(BaseSettings):
     secret_key: str = Field(default="change-me-in-production")
 
     # API
-    api_host: str = "0.0.0.0"
+    # Bind to all interfaces for container/cloud deployment (override via API_HOST env var)
+    api_host: str = "0.0.0.0"  # nosec B104
     api_port: int = 8000
     api_prefix: str = "/api/v1"
 
     # CORS - comma-separated list of allowed origins
     frontend_url: str = "http://localhost:3000"
-    cors_origins: str = ""  # Additional origins, comma-separated (e.g., "https://app.vercel.app,https://custom.domain.com")
+    cors_origins: str = (
+        ""  # Additional origins, comma-separated (e.g., "https://app.vercel.app,https://custom.domain.com")
+    )
 
     # Database
     database_url: PostgresDsn = Field(
@@ -76,4 +79,3 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:
     """Get cached settings instance."""
     return Settings()
-

@@ -220,4 +220,3 @@ class EnergyUsage(Base):
     # Metadata
     source = Column(String(50))  # utility_bill, meter, calculated
     created_at = Column(DateTime, default=datetime.utcnow)
-

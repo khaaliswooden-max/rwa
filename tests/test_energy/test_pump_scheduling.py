@@ -50,12 +50,12 @@ class TestPumpScheduleOptimization:
 
         # Count pumping during different rate periods
         off_peak_hours = sum(
-            1 for h in schedule.hourly_schedule
+            1
+            for h in schedule.hourly_schedule
             if h.pump_on and h.hour in [0, 1, 2, 3, 4, 5, 22, 23]
         )
         on_peak_hours = sum(
-            1 for h in schedule.hourly_schedule
-            if h.pump_on and h.hour in range(14, 22)
+            1 for h in schedule.hourly_schedule if h.pump_on and h.hour in range(14, 22)
         )
 
         # If pumping is needed, should prefer off-peak
@@ -89,4 +89,3 @@ class TestDemandChargeImpact:
 
         assert result["would_increase_peak"] is True
         assert result["additional_charge"] == 25.0 * 12.0  # 300
-

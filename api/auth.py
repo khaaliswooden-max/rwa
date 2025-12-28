@@ -62,7 +62,9 @@ def create_access_token(subject: str, expires_delta: timedelta | None = None) ->
         "iat": now,
         "type": "access",
     }
-    return jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
+    return jwt.encode(
+        payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm
+    )
 
 
 def create_refresh_token(subject: str) -> str:
@@ -76,7 +78,9 @@ def create_refresh_token(subject: str) -> str:
         "iat": now,
         "type": "refresh",
     }
-    return jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
+    return jwt.encode(
+        payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm
+    )
 
 
 def decode_token(token: str) -> TokenPayload:
@@ -119,4 +123,3 @@ async def get_current_user(
 
 # Type alias for dependency injection
 CurrentUser = Annotated[str, Depends(get_current_user)]
-

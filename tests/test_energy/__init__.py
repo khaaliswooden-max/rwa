@@ -1,2 +1,1 @@
 """Energy Module Tests."""
-

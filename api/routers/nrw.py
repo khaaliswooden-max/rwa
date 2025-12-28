@@ -7,9 +7,13 @@ from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel, Field
 
 from api.auth import CurrentUser
-from src.nrw.water_balance import WaterBalance, WaterBalanceInput, calculate_water_balance
 from src.nrw.leak_detection import LeakAnalysis, analyze_leak_indicators
 from src.nrw.mnf_analysis import MNFResult, analyze_minimum_night_flow
+from src.nrw.water_balance import (
+    WaterBalance,
+    WaterBalanceInput,
+    calculate_water_balance,
+)
 
 router = APIRouter()
 
@@ -49,7 +53,9 @@ class MNFRequest(BaseModel):
     hourly_flows: list[float] = Field(
         ..., min_length=24, max_length=168, description="Hourly flow readings (m³/h)"
     )
-    service_connections: int = Field(..., gt=0, description="Number of service connections")
+    service_connections: int = Field(
+        ..., gt=0, description="Number of service connections"
+    )
     average_pressure: float = Field(
         default=40.0, ge=0, description="Average system pressure (meters)"
     )
@@ -155,4 +161,3 @@ async def get_nrw_summary(
         "trend": "improving",
         "trend_percentage": -3.2,
     }
-

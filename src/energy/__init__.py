@@ -10,7 +10,11 @@ Key components:
 - Cost Optimization: Demand charge and rate structure analysis
 """
 
-from src.energy.cost_optimization import CostAnalysis, EnergyCostInput, analyze_energy_costs
+from src.energy.cost_optimization import (
+    CostAnalysis,
+    EnergyCostInput,
+    analyze_energy_costs,
+)
 from src.energy.efficiency_analysis import (
     EfficiencyReport,
     PumpEfficiencyInput,
@@ -33,4 +37,3 @@ __all__ = [
     "EnergyCostInput",
     "analyze_energy_costs",
 ]
-

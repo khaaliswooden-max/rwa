@@ -34,21 +34,15 @@ class LeakAnalysis(BaseModel):
     mnf_trend: Literal["increasing", "stable", "decreasing"] = Field(
         ..., description="MNF trend direction"
     )
-    mnf_trend_slope: float = Field(
-        ..., description="MNF trend slope (m³/h per day)"
-    )
+    mnf_trend_slope: float = Field(..., description="MNF trend slope (m³/h per day)")
 
     # Infrastructure metrics
     pipe_length_km: float = Field(..., description="Total pipe length (km)")
     service_connections: int = Field(..., description="Number of connections")
-    leakage_rate_m3_km_day: float = Field(
-        ..., description="Leakage rate (m³/km/day)"
-    )
+    leakage_rate_m3_km_day: float = Field(..., description="Leakage rate (m³/km/day)")
 
     # Risk assessment
-    infrastructure_leakage_index: float = Field(
-        ..., description="ILI value"
-    )
+    infrastructure_leakage_index: float = Field(..., description="ILI value")
     priority: LeakPriority = Field(..., description="Detection priority")
     risk_score: float = Field(
         ..., ge=0, le=100, description="Overall risk score (0-100)"
@@ -131,9 +125,7 @@ def analyze_leak_indicators(
     priority = determine_priority(risk_score, trend)
 
     # Generate recommendations
-    recommendations = generate_recommendations(
-        ili, trend, leakage_rate, risk_score
-    )
+    recommendations = generate_recommendations(ili, trend, leakage_rate, risk_score)
 
     return LeakAnalysis(
         zone_id=zone_id,
@@ -220,9 +212,7 @@ def generate_recommendations(
     recommendations = []
 
     if risk_score >= 75:
-        recommendations.append(
-            "URGENT: Schedule immediate leak detection survey"
-        )
+        recommendations.append("URGENT: Schedule immediate leak detection survey")
 
     if ili > 8:
         recommendations.append(
@@ -252,4 +242,3 @@ def generate_recommendations(
         )
 
     return recommendations
-

@@ -64,9 +64,7 @@ class CostAnalysis(BaseModel):
     demand_charge: float = Field(..., description="Demand charge ($)")
 
     # Optimization potential
-    optimal_cost_estimate: float = Field(
-        ..., description="Estimated optimal cost ($)"
-    )
+    optimal_cost_estimate: float = Field(..., description="Estimated optimal cost ($)")
 
     @computed_field
     @property
@@ -280,4 +278,3 @@ def calculate_power_factor_impact(
         "annual_savings": round(savings * 12, 2),
         "correction_needed": measured_power_factor < pf_penalty_threshold,
     }
-

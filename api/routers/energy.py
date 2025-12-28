@@ -7,20 +7,20 @@ from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel, Field
 
 from api.auth import CurrentUser
-from src.energy.pump_scheduling import (
-    PumpSchedule,
-    ScheduleOptimizationRequest,
-    optimize_pump_schedule,
+from src.energy.cost_optimization import (
+    CostAnalysis,
+    EnergyCostInput,
+    analyze_energy_costs,
 )
 from src.energy.efficiency_analysis import (
     EfficiencyReport,
     PumpEfficiencyInput,
     analyze_pump_efficiency,
 )
-from src.energy.cost_optimization import (
-    CostAnalysis,
-    EnergyCostInput,
-    analyze_energy_costs,
+from src.energy.pump_scheduling import (
+    PumpSchedule,
+    ScheduleOptimizationRequest,
+    optimize_pump_schedule,
 )
 
 router = APIRouter()
@@ -35,18 +35,17 @@ class PumpScheduleRequest(BaseModel):
     tank_current_level_m3: float = Field(
         ..., ge=0, description="Current tank level (m³)"
     )
-    tank_min_level_m3: float = Field(
-        ..., ge=0, description="Minimum tank level (m³)"
-    )
-    pump_flow_rate_m3h: float = Field(
-        ..., gt=0, description="Pump flow rate (m³/h)"
-    )
+    tank_min_level_m3: float = Field(..., ge=0, description="Minimum tank level (m³)")
+    pump_flow_rate_m3h: float = Field(..., gt=0, description="Pump flow rate (m³/h)")
     pump_power_kw: float = Field(..., gt=0, description="Pump power (kW)")
     demand_forecast_m3h: list[float] = Field(
         ..., min_length=24, max_length=24, description="24-hour demand forecast (m³/h)"
     )
     electricity_rates: list[float] = Field(
-        ..., min_length=24, max_length=24, description="24-hour electricity rates ($/kWh)"
+        ...,
+        min_length=24,
+        max_length=24,
+        description="24-hour electricity rates ($/kWh)",
     )
     optimization_date: date = Field(..., description="Date for optimization")
 
@@ -62,9 +61,7 @@ class EfficiencyAnalysisRequest(BaseModel):
     suction_pressure_m: float = Field(
         ..., ge=0, description="Suction pressure (meters)"
     )
-    power_consumption_kw: float = Field(
-        ..., gt=0, description="Power consumption (kW)"
-    )
+    power_consumption_kw: float = Field(..., gt=0, description="Power consumption (kW)")
     rated_efficiency: float = Field(
         default=0.75, gt=0, le=1, description="Rated pump efficiency"
     )
@@ -194,4 +191,3 @@ async def list_pumps(
             "runtime_hours_today": 3.2,
         },
     ]
-

@@ -138,4 +138,3 @@ class TestUARLCalculation:
         assert uarl > 0
         # Small system should have lower UARL
         assert uarl < 20000  # Reasonable upper bound for small system
-

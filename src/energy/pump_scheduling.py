@@ -62,9 +62,7 @@ class PumpSchedule(BaseModel):
     )
 
     # Schedule
-    hourly_schedule: list[HourlySchedule] = Field(
-        ..., description="24-hour schedule"
-    )
+    hourly_schedule: list[HourlySchedule] = Field(..., description="24-hour schedule")
 
     # Summary metrics
     total_runtime_hours: float = Field(..., description="Total pump runtime (h)")
@@ -72,9 +70,7 @@ class PumpSchedule(BaseModel):
     total_cost: float = Field(..., description="Total energy cost ($)")
 
     # Comparison with baseline
-    baseline_cost: float = Field(
-        ..., description="Cost with continuous operation ($)"
-    )
+    baseline_cost: float = Field(..., description="Cost with continuous operation ($)")
 
     @computed_field
     @property
@@ -242,4 +238,3 @@ def calculate_demand_charge_impact(
         "demand_charge": round(demand_charge, 2),
         "additional_charge": round(additional_charge, 2),
     }
-

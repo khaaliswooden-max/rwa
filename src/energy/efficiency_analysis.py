@@ -53,9 +53,7 @@ class EfficiencyReport(BaseModel):
     power_consumption_kw: float = Field(..., description="Power consumption (kW)")
 
     # Efficiency metrics
-    hydraulic_power_kw: float = Field(
-        ..., description="Hydraulic (water) power (kW)"
-    )
+    hydraulic_power_kw: float = Field(..., description="Hydraulic (water) power (kW)")
     wire_to_water_efficiency: float = Field(
         ..., description="Overall wire-to-water efficiency (0-1)"
     )
@@ -76,9 +74,7 @@ class EfficiencyReport(BaseModel):
         return round(self.wire_to_water_efficiency / self.rated_efficiency, 3)
 
     # Specific energy
-    specific_energy_kwh_m3: float = Field(
-        ..., description="Specific energy (kWh/m³)"
-    )
+    specific_energy_kwh_m3: float = Field(..., description="Specific energy (kWh/m³)")
 
     # Assessment
     efficiency_rating: Literal["excellent", "good", "fair", "poor"] = Field(
@@ -273,4 +269,3 @@ def calculate_energy_savings_potential(
         "cost_savings_annual": round(cost_savings, 2),
         "payback_note": "Compare savings against maintenance/upgrade cost for payback",
     }
-

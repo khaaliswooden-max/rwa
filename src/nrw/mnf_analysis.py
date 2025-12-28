@@ -21,12 +21,8 @@ class MNFResult(BaseModel):
     """Results of Minimum Night Flow analysis."""
 
     # MNF values
-    minimum_flow_m3h: float = Field(
-        ..., description="Minimum flow rate (m³/h)"
-    )
-    mnf_hour: int = Field(
-        ..., ge=0, le=23, description="Hour of minimum flow (0-23)"
-    )
+    minimum_flow_m3h: float = Field(..., description="Minimum flow rate (m³/h)")
+    mnf_hour: int = Field(..., ge=0, le=23, description="Hour of minimum flow (0-23)")
     average_night_flow_m3h: float = Field(
         ..., description="Average flow during night window (m³/h)"
     )
@@ -45,20 +41,12 @@ class MNFResult(BaseModel):
     )
 
     # Context
-    service_connections: int = Field(
-        ..., description="Number of service connections"
-    )
-    average_pressure_m: float = Field(
-        ..., description="Average system pressure (m)"
-    )
+    service_connections: int = Field(..., description="Number of service connections")
+    average_pressure_m: float = Field(..., description="Average system pressure (m)")
 
     # Quality indicators
-    night_day_ratio: float = Field(
-        ..., description="Ratio of night flow to day flow"
-    )
-    confidence: str = Field(
-        ..., description="Confidence level of estimate"
-    )
+    night_day_ratio: float = Field(..., description="Ratio of night flow to day flow")
+    confidence: str = Field(..., description="Confidence level of estimate")
 
     @computed_field
     @property
@@ -134,13 +122,13 @@ def analyze_minimum_night_flow(
     # Calculate average day flow for comparison
     day_flows = flows[6:22]  # 6 AM to 10 PM
     average_day_flow = sum(day_flows) / len(day_flows)
-    night_day_ratio = average_night_flow / average_day_flow if average_day_flow > 0 else 1.0
+    night_day_ratio = (
+        average_night_flow / average_day_flow if average_day_flow > 0 else 1.0
+    )
 
     # Estimate legitimate night use
     # Convert from L/h to m³/h per connection, then multiply by connections
-    legitimate_use_m3h = (
-        legitimate_night_use_lph * service_connections / 1000
-    )
+    legitimate_use_m3h = legitimate_night_use_lph * service_connections / 1000
 
     # Background leakage = MNF - legitimate use
     background_leakage = max(0, minimum_flow - legitimate_use_m3h)
@@ -206,7 +194,9 @@ def assess_confidence(
 
     # Large difference between MNF and average night flow
     # suggests unusual activity or meter issues
-    variance = abs(average_night_flow - minimum_flow) / minimum_flow if minimum_flow > 0 else 0
+    variance = (
+        abs(average_night_flow - minimum_flow) / minimum_flow if minimum_flow > 0 else 0
+    )
     if variance > 0.3:
         score -= 15
     elif variance > 0.2:
@@ -254,9 +244,7 @@ def calculate_component_analysis(
         )
 
     # Background leakage (remainder)
-    background_leakage_m3h = max(
-        0, mnf_m3h - domestic_use_m3h - exceptional_use_m3h
-    )
+    background_leakage_m3h = max(0, mnf_m3h - domestic_use_m3h - exceptional_use_m3h)
 
     return {
         "mnf_m3h": round(mnf_m3h, 3),
@@ -266,9 +254,14 @@ def calculate_component_analysis(
             "background_leakage_m3h": round(background_leakage_m3h, 3),
         },
         "percentages": {
-            "domestic": round(domestic_use_m3h / mnf_m3h * 100, 1) if mnf_m3h > 0 else 0,
-            "exceptional": round(exceptional_use_m3h / mnf_m3h * 100, 1) if mnf_m3h > 0 else 0,
-            "leakage": round(background_leakage_m3h / mnf_m3h * 100, 1) if mnf_m3h > 0 else 0,
+            "domestic": (
+                round(domestic_use_m3h / mnf_m3h * 100, 1) if mnf_m3h > 0 else 0
+            ),
+            "exceptional": (
+                round(exceptional_use_m3h / mnf_m3h * 100, 1) if mnf_m3h > 0 else 0
+            ),
+            "leakage": (
+                round(background_leakage_m3h / mnf_m3h * 100, 1) if mnf_m3h > 0 else 0
+            ),
         },
     }
-

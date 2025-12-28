@@ -41,7 +41,9 @@ class DataSourceConfig(BaseModel):
     )
     name: str = Field(..., description="Source name")
     enabled: bool = Field(default=True, description="Is source active")
-    connection_string: str | None = Field(default=None, description="Connection details")
+    connection_string: str | None = Field(
+        default=None, description="Connection details"
+    )
     polling_interval_minutes: int = Field(
         default=15, ge=1, le=1440, description="Polling interval"
     )
@@ -240,4 +242,3 @@ async def get_ingestion_history(
             "status": "success",
         },
     ]
-

@@ -30,7 +30,9 @@ router = APIRouter()
 class ObligationCreateRequest(BaseModel):
     """Request model for creating a new obligation."""
 
-    title: str = Field(..., min_length=1, max_length=200, description="Obligation title")
+    title: str = Field(
+        ..., min_length=1, max_length=200, description="Obligation title"
+    )
     description: str = Field(default="", description="Detailed description")
     regulation: str = Field(
         ..., description="Regulatory reference (e.g., 'EPA SDWA 40 CFR 141.21')"
@@ -267,4 +269,3 @@ async def get_compliance_calendar(
             ],
         },
     ]
-

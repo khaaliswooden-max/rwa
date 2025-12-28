@@ -1,2 +1,1 @@
 """RWA Test Suite."""
-

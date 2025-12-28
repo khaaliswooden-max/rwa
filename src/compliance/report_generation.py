@@ -55,9 +55,7 @@ class ComplianceReport(BaseModel):
     )
 
     # Summary
-    compliance_status: str = Field(
-        ..., description="Overall compliance status"
-    )
+    compliance_status: str = Field(..., description="Overall compliance status")
     violations_count: int = Field(
         default=0, description="Number of violations in period"
     )
@@ -87,9 +85,13 @@ def generate_report(
     report_id = f"{report_type.value}-{datetime.now().strftime('%Y%m%d%H%M%S')}"
 
     if report_type == ReportType.CCR:
-        return _generate_ccr(report_id, period_start, period_end, include_supporting_data)
+        return _generate_ccr(
+            report_id, period_start, period_end, include_supporting_data
+        )
     elif report_type == ReportType.MOR:
-        return _generate_mor(report_id, period_start, period_end, include_supporting_data)
+        return _generate_mor(
+            report_id, period_start, period_end, include_supporting_data
+        )
     elif report_type == ReportType.SAMPLING:
         return _generate_sampling_report(
             report_id, period_start, period_end, include_supporting_data
@@ -130,18 +132,26 @@ def _generate_ccr(
         ReportSection(
             title="Detected Contaminants",
             content="The following contaminants were detected during the reporting period:",
-            data_tables=[
-                {
-                    "headers": ["Contaminant", "MCL", "Range", "Average", "Violation"],
-                    "rows": [
-                        ["Total Coliform", "0", "0-0", "0", "No"],
-                        ["Chlorine Residual", "4.0 mg/L", "0.5-1.2", "0.8", "No"],
-                        ["Nitrate", "10 mg/L", "1.2-2.5", "1.8", "No"],
-                    ],
-                }
-            ]
-            if include_data
-            else [],
+            data_tables=(
+                [
+                    {
+                        "headers": [
+                            "Contaminant",
+                            "MCL",
+                            "Range",
+                            "Average",
+                            "Violation",
+                        ],
+                        "rows": [
+                            ["Total Coliform", "0", "0-0", "0", "No"],
+                            ["Chlorine Residual", "4.0 mg/L", "0.5-1.2", "0.8", "No"],
+                            ["Nitrate", "10 mg/L", "1.2-2.5", "1.8", "No"],
+                        ],
+                    }
+                ]
+                if include_data
+                else []
+            ),
         ),
         ReportSection(
             title="Compliance Summary",
@@ -177,50 +187,56 @@ def _generate_mor(
         ReportSection(
             title="Production Summary",
             content="Monthly water production and distribution summary.",
-            data_tables=[
-                {
-                    "headers": ["Metric", "Value", "Unit"],
-                    "rows": [
-                        ["Total Production", "5,250,000", "gallons"],
-                        ["Peak Day Production", "210,000", "gallons"],
-                        ["Average Daily Production", "175,000", "gallons"],
-                        ["Total Connections Served", "850", "connections"],
-                    ],
-                }
-            ]
-            if include_data
-            else [],
+            data_tables=(
+                [
+                    {
+                        "headers": ["Metric", "Value", "Unit"],
+                        "rows": [
+                            ["Total Production", "5,250,000", "gallons"],
+                            ["Peak Day Production", "210,000", "gallons"],
+                            ["Average Daily Production", "175,000", "gallons"],
+                            ["Total Connections Served", "850", "connections"],
+                        ],
+                    }
+                ]
+                if include_data
+                else []
+            ),
         ),
         ReportSection(
             title="Treatment Operations",
             content="Summary of treatment operations and chemical usage.",
-            data_tables=[
-                {
-                    "headers": ["Chemical", "Usage", "Unit", "Avg Dose"],
-                    "rows": [
-                        ["Chlorine", "125", "lbs", "1.2 mg/L"],
-                        ["Fluoride", "45", "lbs", "0.7 mg/L"],
-                    ],
-                }
-            ]
-            if include_data
-            else [],
+            data_tables=(
+                [
+                    {
+                        "headers": ["Chemical", "Usage", "Unit", "Avg Dose"],
+                        "rows": [
+                            ["Chlorine", "125", "lbs", "1.2 mg/L"],
+                            ["Fluoride", "45", "lbs", "0.7 mg/L"],
+                        ],
+                    }
+                ]
+                if include_data
+                else []
+            ),
         ),
         ReportSection(
             title="Water Quality Monitoring",
             content="Summary of water quality monitoring results.",
-            data_tables=[
-                {
-                    "headers": ["Parameter", "Samples", "Range", "Average"],
-                    "rows": [
-                        ["Chlorine Residual", "62", "0.5-1.5 mg/L", "0.9 mg/L"],
-                        ["Turbidity", "31", "0.1-0.4 NTU", "0.2 NTU"],
-                        ["pH", "31", "7.2-7.8", "7.5"],
-                    ],
-                }
-            ]
-            if include_data
-            else [],
+            data_tables=(
+                [
+                    {
+                        "headers": ["Parameter", "Samples", "Range", "Average"],
+                        "rows": [
+                            ["Chlorine Residual", "62", "0.5-1.5 mg/L", "0.9 mg/L"],
+                            ["Turbidity", "31", "0.1-0.4 NTU", "0.2 NTU"],
+                            ["pH", "31", "7.2-7.8", "7.5"],
+                        ],
+                    }
+                ]
+                if include_data
+                else []
+            ),
         ),
     ]
 
@@ -247,24 +263,26 @@ def _generate_sampling_report(
         ReportSection(
             title="Sampling Summary",
             content="Summary of water quality samples collected during the reporting period.",
-            data_tables=[
-                {
-                    "headers": [
-                        "Sample Type",
-                        "Required",
-                        "Collected",
-                        "Compliant",
-                        "Status",
-                    ],
-                    "rows": [
-                        ["Total Coliform", "4", "4", "4", "Complete"],
-                        ["Chlorine Residual", "62", "62", "62", "Complete"],
-                        ["DBP (TTHM/HAA5)", "1", "1", "1", "Complete"],
-                    ],
-                }
-            ]
-            if include_data
-            else [],
+            data_tables=(
+                [
+                    {
+                        "headers": [
+                            "Sample Type",
+                            "Required",
+                            "Collected",
+                            "Compliant",
+                            "Status",
+                        ],
+                        "rows": [
+                            ["Total Coliform", "4", "4", "4", "Complete"],
+                            ["Chlorine Residual", "62", "62", "62", "Complete"],
+                            ["DBP (TTHM/HAA5)", "1", "1", "1", "Complete"],
+                        ],
+                    }
+                ]
+                if include_data
+                else []
+            ),
         ),
     ]
 
@@ -320,4 +338,3 @@ def _generate_violation_report(
         compliance_status="non-compliant",
         violations_count=1,
     )
-

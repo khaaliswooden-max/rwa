@@ -1,2 +1,1 @@
 """Compliance Module Tests."""
-

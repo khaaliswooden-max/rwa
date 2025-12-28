@@ -114,4 +114,3 @@ class TestObligationModel:
         )
 
         assert future.days_until_due == 10
-

@@ -34,4 +34,3 @@ __all__ = [
     "RiskAssessment",
     "calculate_compliance_risk",
 ]
-
