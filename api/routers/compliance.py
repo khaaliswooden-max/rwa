@@ -1,9 +1,9 @@
 """Compliance Management API endpoints."""
 
 from datetime import date, datetime
-from typing import Annotated, Literal
+from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
 
 from api.auth import CurrentUser

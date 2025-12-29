@@ -3,7 +3,7 @@
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field, PostgresDsn
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -36,7 +36,7 @@ class Settings(BaseSettings):
     )
 
     # Database
-    database_url: PostgresDsn = Field(
+    database_url: str = Field(
         default="postgresql://rwa_user:rwa_password@localhost:5432/rwa_dev"
     )
     db_pool_size: int = 5

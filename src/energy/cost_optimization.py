@@ -11,9 +11,7 @@ Key features:
 - Cost trend tracking
 """
 
-from dataclasses import dataclass
 from datetime import date, datetime
-from typing import Literal
 
 from pydantic import BaseModel, Field, computed_field
 
@@ -66,13 +64,13 @@ class CostAnalysis(BaseModel):
     # Optimization potential
     optimal_cost_estimate: float = Field(..., description="Estimated optimal cost ($)")
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def savings_potential(self) -> float:
         """Potential savings through optimization ($)."""
         return round(self.total_cost - self.optimal_cost_estimate, 2)
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def savings_potential_percentage(self) -> float:
         """Potential savings as percentage."""
@@ -257,12 +255,12 @@ def calculate_power_factor_impact(
     Returns:
         Dictionary with power factor analysis
     """
-    current_penalty = 0
+    current_penalty: float = 0.0
     if measured_power_factor < pf_penalty_threshold:
         pf_shortfall = int((pf_penalty_threshold - measured_power_factor) * 100)
         current_penalty = monthly_kwh * pf_penalty_rate * pf_shortfall
 
-    potential_penalty = 0
+    potential_penalty: float = 0.0
     if target_power_factor < pf_penalty_threshold:
         pf_shortfall = int((pf_penalty_threshold - target_power_factor) * 100)
         potential_penalty = monthly_kwh * pf_penalty_rate * pf_shortfall

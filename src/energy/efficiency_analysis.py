@@ -9,7 +9,6 @@ Key metrics:
 - Efficiency degradation trends
 """
 
-from dataclasses import dataclass
 from datetime import datetime
 from typing import Literal
 
@@ -59,13 +58,13 @@ class EfficiencyReport(BaseModel):
     )
     rated_efficiency: float = Field(..., description="Rated efficiency (0-1)")
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def efficiency_percentage(self) -> float:
         """Wire-to-water efficiency as percentage."""
         return round(self.wire_to_water_efficiency * 100, 1)
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def efficiency_ratio(self) -> float:
         """Ratio of actual to rated efficiency."""
@@ -137,6 +136,7 @@ def analyze_pump_efficiency(input_data: PumpEfficiencyInput) -> EfficiencyReport
 
     # Determine efficiency rating
     efficiency_ratio = wire_to_water / input_data.rated_efficiency
+    rating: Literal["excellent", "good", "fair", "poor"]
     if efficiency_ratio >= 0.95:
         rating = "excellent"
     elif efficiency_ratio >= 0.85:

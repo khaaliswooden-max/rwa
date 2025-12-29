@@ -1,6 +1,6 @@
 """Pytest configuration and shared fixtures."""
 
-from datetime import date, datetime
+from datetime import date
 from typing import Generator
 
 import pytest

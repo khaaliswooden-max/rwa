@@ -3,7 +3,7 @@
 from collections.abc import Generator
 from contextlib import contextmanager
 
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, declarative_base, sessionmaker
 
 from api.config import get_settings
@@ -89,17 +89,21 @@ TIMESCALE_HYPERTABLES = [
 ]
 
 
-def create_hypertables(connection) -> None:
+def create_hypertables(connection: Session) -> None:
     """
     Create TimescaleDB hypertables for time-series data.
 
     Should be run after initial table creation.
     """
+    from sqlalchemy import text
+
     for table_name, time_column in TIMESCALE_HYPERTABLES:
         try:
             connection.execute(
-                f"SELECT create_hypertable('{table_name}', '{time_column}', "
-                f"if_not_exists => TRUE);"
+                text(
+                    f"SELECT create_hypertable('{table_name}', '{time_column}', "
+                    f"if_not_exists => TRUE);"
+                )
             )
         except Exception as e:
             # Hypertable might already exist or TimescaleDB not installed

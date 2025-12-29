@@ -10,10 +10,6 @@ MNF Components:
 - Exceptional night use (industry, etc.)
 """
 
-from dataclasses import dataclass
-from datetime import datetime, time
-from typing import Optional
-
 from pydantic import BaseModel, Field, computed_field
 
 
@@ -48,7 +44,7 @@ class MNFResult(BaseModel):
     night_day_ratio: float = Field(..., description="Ratio of night flow to day flow")
     confidence: str = Field(..., description="Confidence level of estimate")
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def leakage_per_connection_lph(self) -> float:
         """Leakage per connection (liters per hour)."""
@@ -59,7 +55,7 @@ class MNFResult(BaseModel):
             2,
         )
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def annual_leakage_estimate_m3(self) -> float:
         """Estimated annual leakage volume (m³)."""

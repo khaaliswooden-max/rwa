@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Annotated, Literal
 
-from fastapi import APIRouter, Depends, File, Query, UploadFile
+from fastapi import APIRouter, File, Query, UploadFile
 from pydantic import BaseModel, Field
 
 from api.auth import CurrentUser
@@ -104,12 +104,12 @@ async def submit_manual_readings_batch(
 
 @router.post("/upload/csv", response_model=IngestionResult)
 async def upload_csv_data(
+    current_user: CurrentUser,
     file: UploadFile = File(..., description="CSV file with meter readings"),
     data_type: Annotated[
         Literal["meter_readings", "production", "billing"],
         Query(description="Type of data in the CSV"),
     ] = "meter_readings",
-    current_user: CurrentUser = None,
 ) -> IngestionResult:
     """
     Upload CSV file with meter readings or other data.

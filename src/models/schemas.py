@@ -1,13 +1,11 @@
 """SQLAlchemy database models."""
 
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import (
     Boolean,
     Column,
     DateTime,
-    Enum,
     Float,
     ForeignKey,
     Integer,
@@ -19,7 +17,7 @@ from sqlalchemy.orm import relationship
 from src.models.database import Base
 
 
-class User(Base):
+class User(Base):  # type: ignore[valid-type, misc]
     """User account model."""
 
     __tablename__ = "users"
@@ -38,7 +36,7 @@ class User(Base):
     water_system = relationship("WaterSystem", back_populates="users")
 
 
-class WaterSystem(Base):
+class WaterSystem(Base):  # type: ignore[valid-type, misc]
     """Water system / utility model."""
 
     __tablename__ = "water_systems"
@@ -72,7 +70,7 @@ class WaterSystem(Base):
     obligations = relationship("Obligation", back_populates="water_system")
 
 
-class MeterReading(Base):
+class MeterReading(Base):  # type: ignore[valid-type, misc]
     """Meter reading model - time-series data."""
 
     __tablename__ = "meter_readings"
@@ -100,7 +98,7 @@ class MeterReading(Base):
     water_system = relationship("WaterSystem", back_populates="meter_readings")
 
 
-class Pump(Base):
+class Pump(Base):  # type: ignore[valid-type, misc]
     """Pump asset model."""
 
     __tablename__ = "pumps"
@@ -133,7 +131,7 @@ class Pump(Base):
     water_system = relationship("WaterSystem", back_populates="pumps")
 
 
-class Obligation(Base):
+class Obligation(Base):  # type: ignore[valid-type, misc]
     """Compliance obligation model."""
 
     __tablename__ = "obligations"
@@ -171,7 +169,7 @@ class Obligation(Base):
     water_system = relationship("WaterSystem", back_populates="obligations")
 
 
-class SCADAData(Base):
+class SCADAData(Base):  # type: ignore[valid-type, misc]
     """SCADA telemetry data - time-series."""
 
     __tablename__ = "scada_data"
@@ -194,7 +192,7 @@ class SCADAData(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
-class EnergyUsage(Base):
+class EnergyUsage(Base):  # type: ignore[valid-type, misc]
     """Energy usage data."""
 
     __tablename__ = "energy_usage"

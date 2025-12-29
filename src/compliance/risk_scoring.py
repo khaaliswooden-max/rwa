@@ -51,7 +51,7 @@ class RiskAssessment(BaseModel):
     pending_obligations: int = Field(..., description="Pending count")
     overdue_obligations: int = Field(..., description="Overdue count")
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def compliance_percentage(self) -> float:
         """Percentage of obligations completed or on track."""

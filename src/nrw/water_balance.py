@@ -8,7 +8,6 @@ Reference: IWA Water Loss Task Force methodology
 
 from dataclasses import dataclass
 from datetime import date
-from typing import Optional
 
 from pydantic import BaseModel, Field, computed_field
 
@@ -66,7 +65,7 @@ class WaterBalance(BaseModel):
         ..., description="Total unbilled authorized consumption (m³)"
     )
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def authorized_consumption(self) -> float:
         """Total authorized consumption (m³)."""
@@ -76,28 +75,28 @@ class WaterBalance(BaseModel):
     apparent_losses: float = Field(..., description="Total apparent losses (m³)")
     real_losses: float = Field(..., description="Total real losses (m³)")
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def water_losses(self) -> float:
         """Total water losses (m³)."""
         return self.apparent_losses + self.real_losses
 
     # Revenue Water
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def revenue_water(self) -> float:
         """Revenue water = billed authorized consumption (m³)."""
         return self.billed_authorized_consumption
 
     # Non-Revenue Water
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def non_revenue_water(self) -> float:
         """Non-revenue water (m³)."""
         return self.system_input_volume - self.revenue_water
 
     # Percentages
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def nrw_percentage(self) -> float:
         """NRW as percentage of system input."""
@@ -105,7 +104,7 @@ class WaterBalance(BaseModel):
             return 0.0
         return round((self.non_revenue_water / self.system_input_volume) * 100, 2)
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def real_losses_percentage(self) -> float:
         """Real losses as percentage of system input."""
@@ -113,7 +112,7 @@ class WaterBalance(BaseModel):
             return 0.0
         return round((self.real_losses / self.system_input_volume) * 100, 2)
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def apparent_losses_percentage(self) -> float:
         """Apparent losses as percentage of system input."""

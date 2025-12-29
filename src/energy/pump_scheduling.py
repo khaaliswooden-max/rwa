@@ -10,9 +10,7 @@ Key features:
 - Multiple pump coordination
 """
 
-from dataclasses import dataclass
-from datetime import date, datetime, time, timedelta
-from typing import Literal
+from datetime import date, datetime
 
 from pydantic import BaseModel, Field, computed_field
 
@@ -72,13 +70,13 @@ class PumpSchedule(BaseModel):
     # Comparison with baseline
     baseline_cost: float = Field(..., description="Cost with continuous operation ($)")
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def savings_amount(self) -> float:
         """Cost savings compared to baseline ($)."""
         return round(self.baseline_cost - self.total_cost, 2)
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def savings_percentage(self) -> float:
         """Savings as percentage of baseline."""
@@ -128,7 +126,6 @@ def optimize_pump_schedule(request: ScheduleOptimizationRequest) -> PumpSchedule
             # Find cheapest hour up to this point that's not already mandatory
             best_hour = None
             best_rate = float("inf")
-            check_level = tank_level
 
             for h in range(hour + 1):
                 if h not in mandatory_hours:
@@ -149,7 +146,7 @@ def optimize_pump_schedule(request: ScheduleOptimizationRequest) -> PumpSchedule
 
     # Second pass: add optional pumping in cheapest hours
     # to keep tank reasonably full for reliability
-    target_fill_hours = max(0, len(mandatory_hours))  # Could add buffer
+    # Note: Could extend to add buffer hours in cheapest rate periods
 
     # Calculate baseline cost (continuous operation)
     baseline_cost = sum(

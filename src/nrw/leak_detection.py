@@ -4,7 +4,6 @@ Provides analysis tools for identifying and prioritizing leak
 detection activities based on available data.
 """
 
-from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 from typing import Literal
@@ -53,7 +52,7 @@ class LeakAnalysis(BaseModel):
         default_factory=list, description="Recommended actions"
     )
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def leakage_per_connection_lpd(self) -> float:
         """Leakage per connection (liters per connection per day)."""
@@ -100,6 +99,7 @@ def analyze_leak_indicators(
     slope = numerator / denominator if denominator != 0 else 0
 
     # Determine trend direction
+    trend: Literal["increasing", "stable", "decreasing"]
     if slope > 0.01:
         trend = "increasing"
     elif slope < -0.01:
@@ -157,34 +157,37 @@ def calculate_risk_score(
     - Leakage rate: 35%
     """
     # ILI score (0-100)
+    ili_score: float
     if ili < 2:
-        ili_score = 10
+        ili_score = 10.0
     elif ili < 4:
-        ili_score = 30
+        ili_score = 30.0
     elif ili < 8:
-        ili_score = 60
+        ili_score = 60.0
     else:
-        ili_score = min(100, 60 + (ili - 8) * 5)
+        ili_score = min(100.0, 60.0 + (ili - 8) * 5)
 
     # Trend score (0-100)
+    trend_score: float
     if trend == "decreasing":
-        trend_score = 10
+        trend_score = 10.0
     elif trend == "stable":
-        trend_score = 30
+        trend_score = 30.0
     else:
         # Increasing - score based on slope magnitude
-        trend_score = min(100, 50 + abs(slope) * 500)
+        trend_score = min(100.0, 50.0 + abs(slope) * 500)
 
     # Leakage rate score (0-100)
     # Benchmark: 10 m³/km/day is acceptable, >30 is concerning
+    rate_score: float
     if leakage_rate < 10:
-        rate_score = 20
+        rate_score = 20.0
     elif leakage_rate < 20:
-        rate_score = 40
+        rate_score = 40.0
     elif leakage_rate < 30:
-        rate_score = 60
+        rate_score = 60.0
     else:
-        rate_score = min(100, 60 + (leakage_rate - 30) * 2)
+        rate_score = min(100.0, 60.0 + (leakage_rate - 30) * 2)
 
     # Weighted average
     return (ili_score * 0.40) + (trend_score * 0.25) + (rate_score * 0.35)

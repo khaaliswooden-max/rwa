@@ -1,9 +1,9 @@
 """Energy Management API endpoints."""
 
-from datetime import date, datetime
+from datetime import date
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
 
 from api.auth import CurrentUser
